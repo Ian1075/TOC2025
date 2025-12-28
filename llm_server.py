@@ -15,9 +15,12 @@ def load_config(): # 載入設定檔
     try:
         with open('config.json', 'r', encoding='utf-8') as f:
             return json.load(f)
+    except FileNotFoundError:
+        print("錯誤: 找不到 config.json。請將 config.example.json 複製為 config.json 並填入設定。")
+        return {}
     except Exception as e:
         print(f"讀取設定檔失敗: {e}")
-        return None
+        return {}
 
 config = load_config()
 LLM_URL = config.get("llmurl", "")

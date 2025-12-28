@@ -19,6 +19,7 @@ def load_config():
     except FileNotFoundError:
         print("錯誤：找不到 config.json 檔案。")
         print("請確保與 bot.py 在同一個資料夾中，並已正確命名。")
+        print("提示：你可以將 config.example.json 複製並重新命名為 config.json，然後填入你的資料。")
         return None
     except json.JSONDecodeError:
         print("錯誤：config.json 檔案格式不正確。")

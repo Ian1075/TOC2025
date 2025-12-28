@@ -1,0 +1,7 @@
+{
+    "token": "YOUR_DISCORD_BOT_TOKEN_HERE",
+    "llmurl": "https://api-gateway.netdb.csie.ncku.edu.tw",
+    "apikey": "YOUR_LLM_API_KEY_HERE",
+    "model": "gemma3:4b",
+    "prefix": "!"
+}
