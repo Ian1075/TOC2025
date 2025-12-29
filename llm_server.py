@@ -47,27 +47,8 @@ def chat():
     
     # 指令: 重置 (這還是需要攔截，因為要清空歷史)
     if any(keyword in text_lower for keyword in ["重置", "新炸彈", "重來"]):
-        bomb_agent.user_states.pop(user_name, None)
         conversation_history.pop(user_name, None)
         return jsonify({"reply": "炸彈狀態已重置，請告訴我您看到了什麼？"})
-
-    # 擷取序號 (如果提到序號或 serial，嘗試抓取 6 位英數字)
-    if "序號" in user_text or "serial" in text_lower:
-        match = re.search(r'[a-zA-Z0-9]{6}', user_text)
-        if match:
-            bomb_agent.set_user_state(user_name, serial=match.group(0).upper())
-
-    # 擷取電池 (如果提到電池)
-    if "電池" in user_text or "battery" in text_lower:
-        match = re.search(r'(\d+)', user_text)
-        if match:
-            bomb_agent.set_user_state(user_name, batteries=int(match.group(1)))
-
-    # 擷取錯誤 (如果提到錯誤)
-    if "錯誤" in user_text or "strike" in text_lower:
-        match = re.search(r'(\d+)', user_text)
-        if match:
-            bomb_agent.set_user_state(user_name, strikes=int(match.group(1)))
 
     # --- 記憶功能處理 ---
     if user_name not in conversation_history:
@@ -81,7 +62,7 @@ def chat():
         conversation_history[user_name] = conversation_history[user_name][-20:]
 
     # --- 使用 BombDefuseAgent 生成 Prompt ---
-    system_prompt, status_prefix = bomb_agent.generate_prompt(user_text, user_id=user_name)
+    system_prompt, status_prefix = bomb_agent.generate_prompt(user_text)
 
     # 處理 API URL (改為 /api/generate)
     target_url = LLM_URL

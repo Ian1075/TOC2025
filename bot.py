@@ -36,7 +36,7 @@ if not config:
 # 從設定檔中讀取特定值
 BOT_TOKEN = config.get("token")
 LLM_URL = config.get("llmurl")
-API_KEY = config.get("apikey")
+#API_KEY = config.get("apikey")
 COMMAND_PREFIX = config.get("prefix", "!") # 如果 json 中沒有 prefix，預設為 "!"
 
 # 檢查 Token 是否已設定
@@ -57,7 +57,7 @@ async def on_ready():
     print('------')
     # 現在你可以使用從設定檔載入的變數
     print(f'LLM URL: {LLM_URL}')
-    print(f'API Key: {API_KEY[:4]}... (為了安全，只顯示前幾碼)')
+    #print(f'API Key: {API_KEY[:4]}... (為了安全，只顯示前幾碼)')
 
 class STTSink(voice_recv.AudioSink):
     def __init__(self, channel):
@@ -96,10 +96,10 @@ class STTSink(voice_recv.AudioSink):
     async def check_silence(self):
         """背景任務：檢查使用者是否停止說話，並觸發辨識"""
         while self.running:
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1)
             now = time.time()
             for user_id, last_time in list(self.last_spoken.items()):
-                if now - last_time > 0.5: # 超過 0.5 秒沒說話
+                if now - last_time > 1: # 超過 1 秒沒說話
                     if user_id in self.user_buffers and len(self.user_buffers[user_id]) > 0:
                         audio_data = bytes(self.user_buffers[user_id])
                         self.user_buffers[user_id] = bytearray() # 清空緩衝區
